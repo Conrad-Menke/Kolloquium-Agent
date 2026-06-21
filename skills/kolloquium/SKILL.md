@@ -77,8 +77,8 @@ When the skill activates, do NOT start asking exam questions. Run setup:
    > "Bereit zum Kolloquium. Aus welchem Ordner (oder welcher Datei) soll ich
    > die Unterlagen laden? Bitte Pfad angeben."
 
-   Acceptable answers: a folder, a single PDF, or a space-separated list.
-   Folders are searched recursively for `*.pdf`.
+   Acceptable answers: a folder, a single file, or a space-separated list.
+   Folders are searched recursively for `.pdf` and `.docx`.
 
 2. **Verify dependencies once.** Ensure a venv exists at
    `skills/kolloquium/scripts/.venv/`. If not:
@@ -91,10 +91,12 @@ When the skill activates, do NOT start asking exam questions. Run setup:
    All subsequent `python` calls use
    `skills/kolloquium/scripts/.venv/bin/python`.
 
-3. **Index the corpus.** Single call covers files and folders:
+3. **Index the corpus.** Single call covers files and folders. Supports
+   `.pdf` (page numbers preserved) and `.docx` (no native pages — cited by
+   filename only):
 
    ```bash
-   skills/kolloquium/scripts/.venv/bin/python skills/kolloquium/scripts/index_pdf.py "<path-from-user>"
+   skills/kolloquium/scripts/.venv/bin/python skills/kolloquium/scripts/index_corpus.py "<path-from-user>"
    ```
 
    Report counts, e.g.:
@@ -162,7 +164,9 @@ passage → no content.
    experiential, you may acknowledge it ("plausibel aus der Erfahrung") but
    must ask for or supply the empirical grounding from the corpus.
 5. **Never invent pages, sections, quotes, authors, study names, or numbers.**
-   If unsure, re-run `retrieve.py` rather than guessing.
+   If unsure, re-run `retrieve.py` rather than guessing. If a passage's `page`
+   is `null` (e.g. from a `.docx`), cite the filename only — never fabricate a
+   page number.
 6. **Mode A: one question per turn.** Never stack. In Mode B each card is a
    single self-contained question.
 
@@ -299,10 +303,10 @@ When the user asks for help picking or shaping a Kurzvortrag topic:
 skills/kolloquium/
 ├── SKILL.md              # this file
 ├── scripts/
-│   ├── index_pdf.py      # parse + chunk + embed + store (file or folder)
+│   ├── index_corpus.py   # parse + chunk + embed + store (PDF/DOCX, file or folder)
 │   ├── retrieve.py       # query → JSON passages
 │   └── requirements.txt
-├── data/                 # PDFs (gitignored)
+├── data/                 # PDFs/DOCX (gitignored)
 └── index/                # Chroma DB (gitignored)
 ```
 

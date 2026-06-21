@@ -4,11 +4,11 @@
     "edit": false,
     "bash": {
       ".": [
-        "python skills/kolloquium/scripts/index_pdf.py *",
+        "python skills/kolloquium/scripts/index_corpus.py *",
         "python skills/kolloquium/scripts/retrieve.py *",
-        "python3 skills/kolloquium/scripts/index_pdf.py *",
+        "python3 skills/kolloquium/scripts/index_corpus.py *",
         "python3 skills/kolloquium/scripts/retrieve.py *",
-        "skills/kolloquium/scripts/.venv/bin/python skills/kolloquium/scripts/index_pdf.py *",
+        "skills/kolloquium/scripts/.venv/bin/python skills/kolloquium/scripts/index_corpus.py *",
         "skills/kolloquium/scripts/.venv/bin/python skills/kolloquium/scripts/retrieve.py *",
         "pip install -r skills/kolloquium/scripts/requirements.txt",
         "skills/kolloquium/scripts/.venv/bin/pip install -r skills/kolloquium/scripts/requirements.txt",

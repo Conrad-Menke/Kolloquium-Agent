@@ -13,7 +13,7 @@ Repo root is the working directory. Keep paths relative to root.
 ## Conventions
 
 - One logical change per commit.
-- Do not commit secrets, tokens, API keys, `.env`, PDFs, or the Chroma index.
+- Do not commit secrets, tokens, API keys, `.env`, PDFs, DOCX, or the Chroma index.
 - Python code targets 3.10+ (uses PEP 604 unions, `from __future__ import annotations`).
 - Run `python -m py_compile` on changed `.py` files before committing if no
   test suite exists yet.
@@ -22,7 +22,7 @@ Repo root is the working directory. Keep paths relative to root.
 
 | Script | Purpose | Read-only? |
 |--------|---------|-----------|
-| `skills/kolloquium/scripts/index_pdf.py` | Parse + chunk + embed PDF into Chroma | Writes to `index/` |
+| `skills/kolloquium/scripts/index_corpus.py` | Parse + chunk + embed PDF/DOCX into Chroma | Writes to `index/` |
 | `skills/kolloquium/scripts/retrieve.py` | Query Chroma → JSON passages | Read-only |
 
 Both scripts must remain **deterministic and side-effect-free apart from the
@@ -37,7 +37,7 @@ verbatim in spirit — they are the whole point of this repo.
 ## What NOT to do
 
 - Do not add a networked LLM call inside the scripts. The skill calls the LLM
-  via opencode; the scripts only handle parsing + retrieval.
+  via opencode; the scripts only handle parsing + retrieval (PDF + DOCX).
 - Do not store PDFs or the Chroma index in git.
 - Do not force-push or rewrite history unless explicitly asked.
 - Do not install heavy dependencies without confirmation.

@@ -28,10 +28,10 @@ passages a retrieval step returns.
 │   └── kolloquium/
 │       ├── SKILL.md                # The examiner skill (persona + rules)
 │       ├── scripts/
-│       │   ├── index_pdf.py        # Parse + chunk + embed PDF → Chroma
+│       │   ├── index_corpus.py     # Parse + chunk + embed PDF/DOCX → Chroma
 │       │   ├── retrieve.py         # Query → JSON passages
 │       │   └── requirements.txt
-│       ├── data/                   # PDFs land here (gitignored)
+│       ├── data/                   # PDFs/DOCX land here (gitignored)
 │       └── index/                  # Chroma DB (gitignored)
 ```
 
