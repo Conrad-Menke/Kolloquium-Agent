@@ -34,7 +34,8 @@ passages a retrieval step returns.
 
 ## Install
 
-1. Install dependencies once:
+1. Clone and (optionally) install dependencies ahead of time. The skill will
+   also do this on first activation:
 
    ```bash
    cd skills/kolloquium/scripts
@@ -43,15 +44,7 @@ passages a retrieval step returns.
    pip install -r requirements.txt
    ```
 
-2. Drop your PDFs into `skills/kolloqium/data/` (or anywhere on disk).
-
-3. Index them:
-
-   ```bash
-   python index_pdf.py ../data/your-script.pdf
-   ```
-
-4. Activate the skill in opencode. Either:
+2. Activate the skill in opencode. Either:
 
    - Symlink the skill into your opencode config dir:
 
@@ -62,7 +55,22 @@ passages a retrieval step returns.
 
    - Or run opencode from the repo root and reference the skill path directly.
 
-5. Start a session: *"Führe ein Kolloquium mit mir über das Material."*
+## Running a Kolloquium
+
+Start a session with any trigger phrase, e.g.:
+
+> "Führe ein Kolloquium mit mir."
+
+The skill then runs an **activation round**:
+
+1. Asks for the folder or PDF file(s) to load (recursive for folders).
+2. Verifies / creates the venv and installs requirements (first time only).
+3. Indexes every PDF found into the local Chroma store and reports counts.
+4. Optionally asks 1–2 focus questions (topics, depth).
+5. Opens the exam with the first grounded question.
+
+Continuation: re-activating with "weiter" / "continue" resumes without
+re-indexing.
 
 ## How grounding works
 

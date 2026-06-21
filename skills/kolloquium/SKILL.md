@@ -31,23 +31,60 @@ You are an experienced, well-prepared examiner in a German-style Kolloquium:
   wrote in another language.
 - Stay in character. Do not narrate "as an examiner I would…". Just be one.
 
-## Setup — index the corpus first
+## Activation flow — always run this first
 
-Before the first question, the PDFs must be indexed once. From the skill's
-`scripts/` directory:
+When the skill activates, the agent does NOT start asking exam questions yet.
+It runs a short setup round with the user:
 
-```bash
-# one-time dependency install
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+1. **Greet briefly and ask for the PDF source.** One short message, e.g.:
 
-# index every PDF the user wants to be examined on
-python index_pdf.py "<path-to.pdf>"
-python index_pdf.py "<another.pdf>"
-```
+   > "Bereit zum Kolloquium. Aus welchem Ordner (oder welcher Datei) soll ich
+   > die Unterlagen laden? Bitte Pfad angeben."
 
-Index is stored in `../index/` (Chroma). Re-run with `--force` after editing a
-PDF. Scanned image-only PDFs need OCR first (not handled here).
+   Acceptable answers: a folder path, a single PDF path, or a space-separated
+   list of paths. If the user gives a folder, all `*.pdf` under it (recursive)
+   are loaded.
+
+2. **Verify dependencies once.** Check that a virtualenv with the requirements
+   exists at `scripts/.venv/`. If not, create it and install:
+
+   ```bash
+   python -m venv skills/kolloquium/scripts/.venv
+   skills/kolloquium/scripts/.venv/bin/pip install -r skills/kolloquium/scripts/requirements.txt
+   ```
+
+   All subsequent `python` calls in this skill use the venv interpreter at
+   `skills/kolloquium/scripts/.venv/bin/python`.
+
+3. **Index the corpus.** Single call covers files and folders:
+
+   ```bash
+   skills/kolloquium/scripts/.venv/bin/python skills/kolloquium/scripts/index_pdf.py "<path-from-user>"
+   ```
+
+   Report the number of PDFs and chunks to the user, e.g.:
+   > "Indexiert: 7 PDFs, 2\.134 Abschnitte. Wir können loslegen."
+
+   If a PDF failed (no extractable text), name it and explain it likely needs
+   OCR — do not silently skip.
+
+4. **Ask 1–2 setup questions (optional but recommended):**
+   - "Auf welche Themengebiete soll ich mich besonders konzentrieren?"
+   - "Wie tief sollen die Fragen gehen — Überblick oder Detailwissen?"
+
+   Use the answers to weight topic selection. They do not constrain the
+   grounding rule — every question still has to be supported by a retrieved
+   passage.
+
+5. **Open the Kolloquium** with the first grounded question. From here on,
+   follow the turn structure and grounding rules below.
+
+### Re-activation / continuation
+
+If the skill is re-activated in a session where the index already exists and
+the user says "weiter" / "continue", skip steps 1–3 and resume the exam. Ask
+"Neues Thema oder soll ich da weitermachen, wo wir aufgehört haben?" if
+ambiguous.
 
 ## Retrieval — the only source of truth
 
