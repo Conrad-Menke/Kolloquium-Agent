@@ -36,7 +36,7 @@ vorhersehbares JSON zurückgeben.
 
 Der Prüfer-Agent darf niemals eine Frage stellen, deren Inhalt nicht durch
 abgerufene Passagen gestützt ist. Bei Änderungen an `SKILL.md` die
-Grounding-Regeln im Geist wortwörtlich erhalten — sie sind der ganze Sinn
+Grounding-Regeln inhaltlich wortwörtlich erhalten — sie sind der ganze Sinn
 dieses Repos.
 
 ## Was NICHT zu tun ist
@@ -45,6 +45,6 @@ dieses Repos.
   Skill ruft das LLM über opencode; die Skripte übernehmen nur Parsen +
   Retrieval (PDF + DOCX).
 - Keine PDFs oder den Chroma-Index in git speichern.
-- Nicht force-pushen oder History umschreiben, außer wenn ausdrücklich
+- Nicht force-pushen oder die Commit-Historie umschreiben, außer wenn ausdrücklich
   darum gebeten.
 - Keine schweren Abhängigkeiten ohne Bestätigung installieren.

@@ -55,7 +55,7 @@ Ein Befehl lädt die neueste Version herunter und installiert sie:
 curl -fsSL https://opencode.ai/install | bash
 ```
 
-Danach `opencode` im Terminal aufrufen können. Auf macOS alternativ
+Danach kannst du `opencode` im Terminal aufrufen. Auf macOS alternativ
 `brew install opencode`, auf Arch `paru -S opencode`. Details siehe
 <https://opencode.ai/docs>.
 
@@ -99,7 +99,7 @@ Der Skill läuft dann eine **Aktivierungsrunde**:
    ersten Mal).
 3. Indiziert alle gefundenen Dateien in den lokalen Chroma-Store und
    meldet die Anzahl.
-4. Fragt **welcher Modus** (A — Simulation, B — Karteikarten, C — Aufbau)
+4. Fragt, **welcher Modus** (A — Simulation, B — Karteikarten, C — Aufbau)
    plus modusspezifisches Setup.
 5. Startet den gewählten Modus.
 
@@ -144,4 +144,4 @@ und sagt das auch. Vollständige Regeln in `skills/kolloquium/SKILL.md`.
 Gerüst steht — Index- und Retrieval-Skripte sind funktionierendes Python. Die
 Prüfer-Persona lebt vollständig im SKILL.md-Prompt. Kein Server, kein Daemon,
 kein externer API-Key nötig (Embeddings laufen lokal über
-`sentence-transformers`; das LLM ist, was auch immer opencode ohnehin nutzt).
+`sentence-transformers`; das LLM ist dasselbe, das opencode ohnehin nutzt).
