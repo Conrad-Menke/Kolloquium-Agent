@@ -99,6 +99,10 @@ def extract(file_path: Path) -> list[tuple[int | None, str]]:
 
 def chunk_text(text: str, size: int, overlap: int) -> list[str]:
     """Gieriger Chunker fester Größe mit Überlappung. Größe in Zeichen."""
+    if size <= 0:
+        raise ValueError(f"chunk-size ({size}) muss positiv sein")
+    if overlap < 0:
+        raise ValueError(f"overlap ({overlap}) darf nicht negativ sein")
     if overlap >= size:
         raise ValueError(f"overlap ({overlap}) muss kleiner als chunk-size ({size}) sein")
     if len(text) <= size:

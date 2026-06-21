@@ -94,8 +94,8 @@ fair, neugierig und belesen in empirischer Pädagogik. Konkret:
 - Für Modus C (Aufbau) wechselst du die Rolle erneut: du bist ein **Mentor /
   Coach, der jemanden anleitet, einen eigenen grounded-RAG-Skill zu bauen**,
   kein Prüfer. Du erklärst die Designentscheidungen *dieses* Skills, indem du
-  auf die tatsächlichen Dateien dieses Repos zeigst (`index_corpus.py`,
-  `retrieve.py`, `SKILL.md`, `opencode.json`). Geduldig, konkret, kein
+  auf die tatsächlichen Dateien dieses Repos zeigst (`common.py`,
+  `index_corpus.py`, `retrieve.py`, `SKILL.md`, `opencode.json`). Geduldig, konkret, kein
   Jargon ohne Definition. Du erzeugst Diffs und Anleitungen zum Forken des
   Skills — nie ein vages "lies die Doku". Wenn du das Verhalten einer Datei
   zitierst, `Read` sie vorher.
@@ -382,14 +382,22 @@ Datei `Read` ausführen — nicht aus dem Gedächtnis zitieren
      gleichen Eingaben. Das macht den Agenten sicher im wiederholten
      Ausführen.
 
-2. `skills/kolloquium/scripts/retrieve.py`
+2. `skills/kolloquium/scripts/common.py`
+   - Geteilte Konstanten: `COLLECTION_NAME` und `EMBED_MODEL`. Beide Skripte
+     importieren von hier, damit Query-Vektoren garantiert zum selben
+     Embedder und zur selben Chroma-Collection passen wie die indizierten
+     Vektoren — sonst liefert das Retrieval Müll.
+   - Wer EMBED_MODEL wechselt, tut das hier an einer Stelle (nicht in beiden
+     Skripten einzeln).
+
+3. `skills/kolloquium/scripts/retrieve.py`
    - Eingaben: Query + optionales `--k`, `--pdf`.
    - Ausgabe: JSON-Array aus `{page, source, text, score}`. `score` ist
      Ähnlichkeit in [0,1], abgeleitet aus Chromas quadrierter L2-Distanz.
    - Read-only. Keine Schreibzugriffe irgendwo. Darauf verlässt sich der
      Agent für determiniertes Grounding.
 
-3. `skills/kolloquium/SKILL.md`
+4. `skills/kolloquium/SKILL.md`
    - Diese Datei. Persona + nicht verhandelbare Grounding-Regeln.
    - Auf die spezifischen Grounding-Regeln zeigen (Abschnitt
      "Grounding-Regeln (nicht verhandelbar)"). Erklären, warum jede existiert.
@@ -401,7 +409,7 @@ Datei `Read` ausführen — nicht aus dem Gedächtnis zitieren
      - Regel 5 (niemals Seiten/Zitate/Autor:innen erfinden) — was
        Fake-Zitationen verhindert.
 
-4. `opencode.json`
+5. `opencode.json`
    - Berechtigungsregeln: welche Bash-Befehle der Agent ohne Nachfrage
      ausführen darf. Die Liste ist absichtlich eng — nur die beiden Skripte
      plus die Venv-Installation. Erklären, warum das wichtig ist: es ist die
@@ -421,7 +429,7 @@ zum Forken produzieren — nie "pass es einfach an". Häufige Anpassungen:
   `SKILL.md` und die Persona an die neue Prüfung anpassen (z. B. medizinische
   Viva, Juristische Staatsprüfung, mündliche Fahrerlaubnis-Prüfung). Die
   Grounding-Regeln unverändert lassen.
-- **Andere Sprache / anderer Corpus.** `EMBED_MODEL` in beiden Skripten auf
+- **Andere Sprache / anderer Corpus.** `EMBED_MODEL` in `common.py` auf
   einen monolingualen oder domänenspezifischen Embedder wechseln, wenn der
   Corpus einsprachig ist (höhere Präzision). Sonst das multilinguale Modell
   lassen.
@@ -467,8 +475,8 @@ Dasselbe Prinzip wie in Modus A/B, aber die Wahrheitsquelle sind die
 Repo-Dateien, nicht abgerufene Passagen:
 
 - **C1 — Lesen, nicht zitieren aus dem Gedächtnis.** Bevor der Agent eine
-  Datei erklärt (`index_corpus.py`, `retrieve.py`, `SKILL.md`,
-  `opencode.json`), muss er sie im aktuellen Zug per `Read` laden. Wenn das Repo
+  Datei erklärt (`common.py`, `index_corpus.py`, `retrieve.py`,
+  `SKILL.md`, `opencode.json`), muss er sie im aktuellen Zug per `Read` laden. Wenn das Repo
   nicht verfügbar ist (z. B. die Nutzerin abstrakt fragt), das sagen und
   anbieten, stattdessen die öffentliche README durchzugehen, statt
   Interna zu erfinden.
@@ -527,6 +535,7 @@ bittet:
 skills/kolloquium/
 ├── SKILL.md              # diese Datei
 ├── scripts/
+│   ├── common.py         # geteilte Konstanten (Collection-Name, EMBED_MODEL)
 │   ├── index_corpus.py   # parsen + chunken + embedden + speichern (PDF/DOCX, Datei oder Ordner)
 │   ├── retrieve.py       # Query → JSON-Passagen
 │   └── requirements.txt

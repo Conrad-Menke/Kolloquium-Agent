@@ -32,6 +32,8 @@ Passagen Zugriff hat, die ein Retrieval-Schritt zurückliefert.
 .
 ├── AGENTS.md                       # Agent-Anweisungen (Repo-Ebene)
 ├── opencode.json                   # opencode-Konfiguration + Berechtigungsregeln
+├── .opencode/
+│   └── skills/kolloquium -> ../../../skills/kolloquium   # Discovery-Symlink (s.u.)
 ├── skills/
 │   └── kolloquium/
 │       ├── SKILL.md                # Der Prüfer-Skill (Persona + Regeln)
@@ -68,16 +70,26 @@ cd Kolloqium-Agent
 
 ### 3. Skill in opencode bekannt machen
 
-Entweder per Symlink in das opencode-Konfigurationsverzeichnis (empfohlen,
-danach ist der Skill in jedem Projekt verfügbar):
+opencode entdeckt Skills nur unter festen Pfaden (siehe
+<https://opencode.ai/docs/skills/>): `.opencode/skills/<name>/SKILL.md`
+(projektlokal) oder `~/.config/opencode/skills/<name>/SKILL.md` (global).
+Ein nackter `skills/`-Ordner am Repo-Root wird *nicht* gefunden — darum
+kümmert sich dieser Schritt.
+
+Dieses Repo legt den projektlokalen Pfad als Symlink an, damit das
+Original unter `skills/kolloquium/` liegen bleiben kann:
+
+```bash
+mkdir -p .opencode/skills
+ln -s ../../skills/kolloquium .opencode/skills/kolloquium
+```
+
+Wer den Skill projektübergreifend nutzen will, zusätzlich global verlinken:
 
 ```bash
 ln -s "$(pwd)/skills/kolloquium" \
       "$HOME/.config/opencode/skills/kolloquium"
 ```
-
-…oder opencode einfach aus dem Repo-Root heraus starten — dann wird der
-Skill über seinen relativen Pfad gefunden.
 
 ### 4. Erste Session starten
 
@@ -131,7 +143,7 @@ Session zurückkehren. Abbrechen: "stop" / "exit exam" / "ich will aufhören".
 Vor jeder Frage läuft pro Zug:
 
 ```bash
-python retrieve.py "<konzept>" --k 5
+skills/kolloquium/scripts/.venv/bin/python skills/kolloquium/scripts/retrieve.py "<konzept>" --k 5
 ```
 
 Das zurückgegebene JSON (`page`, `source`, `text`, `score`) ist das
