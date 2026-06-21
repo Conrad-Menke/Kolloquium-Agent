@@ -70,7 +70,7 @@ def main() -> int:
         return 2
 
     embedder = SentenceTransformer(EMBED_MODEL)
-    query_vec = embedder.encode([args.query], convert_to_numpy=True).tolist()
+    query_vec = embedder.encode([args.query], convert_to_numpy=True, normalize_embeddings=True).tolist()
 
     where = {"source_name": args.pdf} if args.pdf else None
     res = collection.query(

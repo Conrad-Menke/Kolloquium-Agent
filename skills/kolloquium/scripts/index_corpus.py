@@ -100,6 +100,8 @@ def extract(file_path: Path) -> list[tuple[int | None, str]]:
 
 def chunk_text(text: str, size: int, overlap: int) -> list[str]:
     """Gieriger Chunker fester Größe mit Überlappung. Größe in Zeichen."""
+    if overlap >= size:
+        raise ValueError(f"overlap ({overlap}) muss kleiner als chunk-size ({size}) sein")
     if len(text) <= size:
         return [text] if text else []
     chunks: list[str] = []
@@ -108,8 +110,6 @@ def chunk_text(text: str, size: int, overlap: int) -> list[str]:
         end = start + size
         chunks.append(text[start:end])
         start = end - overlap
-        if start >= len(text):
-            break
     return chunks
 
 
@@ -164,7 +164,7 @@ def index_one(
     if not docs:
         return False, f"alle Chunks leer in {file_path.name}"
 
-    vectors = embedder.encode(docs, show_progress_bar=False, convert_to_numpy=True).tolist()
+    vectors = embedder.encode(docs, show_progress_bar=False, convert_to_numpy=True, normalize_embeddings=True).tolist()
     collection.upsert(ids=ids, documents=docs, metadatas=metas, embeddings=vectors)
     return True, f"{len(docs)} Chunks aus {file_path.name} indiziert"
 
