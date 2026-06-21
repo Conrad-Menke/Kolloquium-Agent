@@ -1,4 +1,4 @@
-# Kolloqium-Agent
+# Kolloquium-Agent
 
 Ein opencode-Skill, der einen Corpus an PDFs in einen **NRW-Kolloquiums-Coach**
 verwandelt. Gebaut für die Zweite Staatsprüfung (`Vorbereitungsdienst` /
@@ -32,7 +32,7 @@ Passagen Zugriff hat, die ein Retrieval-Schritt zurückliefert.
 ├── AGENTS.md                       # Agent-Anweisungen (Repo-Ebene)
 ├── opencode.json                   # opencode-Konfiguration + Berechtigungsregeln
 ├── .opencode/
-│   └── skills/kolloquium -> ../../../skills/kolloquium   # Discovery-Symlink (s.u.)
+│   └── skills/kolloquium -> ../../skills/kolloquium   # Discovery-Symlink (s.u.)
 ├── skills/
 │   └── kolloquium/
 │       ├── SKILL.md                # Der Prüfer-Skill (Persona + Regeln)

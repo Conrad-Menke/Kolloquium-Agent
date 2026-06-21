@@ -79,11 +79,22 @@ def extract_pages_pdf(pdf_path: Path) -> list[tuple[int, str]]:
 
 def extract_text_docx(docx_path: Path) -> list[tuple[int | None, str]]:
     """Ganze DOCX als einzelnen logischen Block zurückgeben. DOCX hat keine
-    nativen Seiten, daher page=None — Zitation nur nach Dateiname."""
+    nativen Seiten, daher page=None — Zitation nur nach Dateiname.
+    Tabellen-Zellen werden ebenfalls erfasst (pro Zeile dedupliziert, damit
+    verbundene Zellen nicht mehrfach indiziert werden)."""
     from docx import Document
 
     doc = Document(str(docx_path))
-    text = "\n".join(p.text for p in doc.paragraphs if p.text.strip())
+    parts: list[str] = [p.text for p in doc.paragraphs if p.text.strip()]
+    for table in doc.tables:
+        for row in table.rows:
+            seen: set[str] = set()
+            for cell in row.cells:
+                t = cell.text.strip()
+                if t and t not in seen:
+                    seen.add(t)
+                    parts.append(t)
+    text = "\n".join(parts)
     return [(None, text)] if text else []
 
 
@@ -153,17 +164,17 @@ def index_one(
             if not chunk.strip():
                 continue
             docs.append(chunk)
-            metas.append(
-                {
-                    "source_file": str(file_path.resolve()),
-                    "source_name": file_path.name,
-                    "source_ext": file_path.suffix.lower().lstrip("."),
-                    "page": page_no,
-                    "block_index": block_index,
-                    "chunk_index": j,
-                    "source_sig": sig,
-                }
-            )
+            meta: dict = {
+                "source_file": str(file_path.resolve()),
+                "source_name": file_path.name,
+                "source_ext": file_path.suffix.lower().lstrip("."),
+                "block_index": block_index,
+                "chunk_index": j,
+                "source_sig": sig,
+            }
+            if page_no is not None:
+                meta["page"] = page_no
+            metas.append(meta)
             page_part = f"p{page_no}" if page_no is not None else f"b{block_index}"
             ids.append(f"{sig}::{page_part}::c{j}")
 
