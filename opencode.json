@@ -1,15 +1,13 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "permission": {
-    "edit": false,
+    "edit": "deny",
     "bash": {
-      ".": [
-        "skills/kolloquium/scripts/.venv/bin/python skills/kolloquium/scripts/index_corpus.py *",
-        "skills/kolloquium/scripts/.venv/bin/python skills/kolloquium/scripts/retrieve.py *",
-        "skills/kolloquium/scripts/.venv/bin/pip install -r skills/kolloquium/scripts/requirements.txt",
-        "python -m venv skills/kolloquium/scripts/.venv",
-        "source skills/kolloquium/scripts/.venv/bin/activate"
-      ]
+      "skills/kolloquium/scripts/.venv/bin/python skills/kolloquium/scripts/index_corpus.py *": "allow",
+      "skills/kolloquium/scripts/.venv/bin/python skills/kolloquium/scripts/retrieve.py *": "allow",
+      "skills/kolloquium/scripts/.venv/bin/pip install -r skills/kolloquium/scripts/requirements.txt": "allow",
+      "python -m venv skills/kolloquium/scripts/.venv": "allow",
+      "source skills/kolloquium/scripts/.venv/bin/activate": "allow"
     }
   }
 }
