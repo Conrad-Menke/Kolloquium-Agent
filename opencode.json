@@ -1,0 +1,6 @@
+# opencode configuration
+# https://opencode.ai/docs
+
+{
+  "$schema": "https://opencode.ai/config.json"
+}
