@@ -2,34 +2,42 @@
 
 ## Project context
 
-Kolloqium-Agent: agent assisting with Kolloquium (seminar / conference /
-colloquium) related tasks. Update this file as scope becomes concrete.
+`Kolloqium-Agent`: opencode skill that turns a corpus of PDFs into a
+conversational oral examiner. Lives in `skills/kolloquium/`. Read
+`skills/kolloquium/SKILL.md` first when working on the examiner behavior.
 
 ## Working directory
 
-Repo root is the working directory. Keep all paths relative to root.
+Repo root is the working directory. Keep paths relative to root.
 
 ## Conventions
 
-- Keep changes small and focused. One logical change per commit.
-- Do not commit secrets, tokens, API keys, or `.env` files.
-- Follow existing code style. If none exists yet, ask before introducing a new
-  language or framework.
-- Run lint / typecheck before committing if a toolchain is configured.
+- One logical change per commit.
+- Do not commit secrets, tokens, API keys, `.env`, PDFs, or the Chroma index.
+- Python code targets 3.10+ (uses PEP 604 unions, `from __future__ import annotations`).
+- Run `python -m py_compile` on changed `.py` files before committing if no
+  test suite exists yet.
 
-## Communication
+## Skill scripts
 
-- Be concise. Lead with the result, then the reasoning if asked.
-- Surface assumptions explicitly before acting on them.
+| Script | Purpose | Read-only? |
+|--------|---------|-----------|
+| `skills/kolloquium/scripts/index_pdf.py` | Parse + chunk + embed PDF into Chroma | Writes to `index/` |
+| `skills/kolloquium/scripts/retrieve.py` | Query Chroma → JSON passages | Read-only |
 
-## What to do first
+Both scripts must remain **deterministic and side-effect-free apart from the
+index dir**. The agent relies on them returning predictable JSON.
 
-1. Confirm the project's language / runtime with the user.
-2. Pick a package manager and lockfile strategy.
-3. Scaffold the entry point and a minimal test.
+## Grounding rules (critical)
+
+The examiner agent must never ask a question whose content is not supported by
+retrieved passages. When modifying `SKILL.md`, preserve the grounding rules
+verbatim in spirit — they are the whole point of this repo.
 
 ## What NOT to do
 
+- Do not add a networked LLM call inside the scripts. The skill calls the LLM
+  via opencode; the scripts only handle parsing + retrieval.
+- Do not store PDFs or the Chroma index in git.
 - Do not force-push or rewrite history unless explicitly asked.
 - Do not install heavy dependencies without confirmation.
-- Do not delete files outside the repo root.

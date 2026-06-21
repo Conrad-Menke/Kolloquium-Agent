@@ -21,3 +21,8 @@ node_modules/
 # Build output
 dist/
 build/
+
+# Kolloquium skill: PDFs + vector index + venv (never commit)
+skills/kolloquium/data/
+skills/kolloquium/index/
+skills/kolloquium/scripts/.venv/
