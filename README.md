@@ -14,12 +14,11 @@ Der Skill läuft in drei Modi:
 - **Modus B — Karteikarten**: erzeugt Lernkarten. Jede Karte hat eine fiktive
   Prüfungsfrage, 3–5 Antwort-Schlagworte und die exakte Quellenstelle aus den
   PDFs.
-- **Modus C — Aufbau (Build-your-own tutor)**: der Agent wechselt die Rolle vom
-  Prüfer zum Coach/Mentor und führt dich durch den Aufbau dieses Skills und
-  zeigt, wie du ihn für deinen eigenen Anwendungsfall forken kannst (anderes
-  Prüfungsformat, andere Sprache, Forschungsartikel statt PDFs, Anki-Export,
-  …). Modus C liest die tatsächlichen Dateien dieses Repos statt aus dem
-  Gedächtnis zu zitieren.
+- **Modus C — Aufbau**: der Agent wechselt die Rolle vom Prüfer zum Mentor
+  und erklärt dir interaktiv, wie dieser Skill funktioniert — von der
+  RAG-Grundidee bis zur konkreten Datei. Du fragst, der Agent antwortet
+  grounded in den tatsächlichen Dateien dieses Repos statt aus dem Gedächtnis
+  zu zitieren.
 
 Jede Frage und jede Karte ist **in abgerufenen Textstellen verankert**. Wenn
 der Corpus eine Frage nicht hergibt, sagt der Agent das auch, statt etwas zu
@@ -133,7 +132,7 @@ pip install -r requirements.txt
 Nach der Aktivierungsrunde (siehe Quickstart Schritt 5) läuft der gewählte
 Modus. Was in der Session passiert, steckt in `skills/kolloquium/SKILL.md`:
 Modus A führt ein fließendes Gespräch, Modus B erzeugt Karteikarten im
-gewünschten Format, Modus C erklärt und adaptiert den Agenten.
+gewünschten Format, Modus C erklärt interaktiv die Architektur des Skills.
 
 Fortsetzen: mit "weiter" / "continue" ohne Neu-Indizierung in dieselbe
 Session zurückkehren. Abbrechen: "stop" / "exit exam" / "ich will aufhören".
