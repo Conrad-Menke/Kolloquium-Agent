@@ -3,7 +3,7 @@
 An opencode skill that turns a corpus of PDFs into an **NRW Kolloquium** coach.
 Built for the second-state exam (`Vorbereitungsdienst` / `Referendariat`).
 
-The skill runs in two modes:
+The skill runs in three modes:
 
 - **Mode A — Simulation**: a dynamic examiner conversation calibrated to the
   real NRW format. You open with a self-chosen *Kurzvortrag*; the agent picks
@@ -12,6 +12,11 @@ The skill runs in two modes:
 - **Mode B — Karteikarten**: produces study flashcards. Each card has a
   fictional examiner question, 3–5 answer keywords, and the exact source
   passage from your PDFs.
+- **Mode C — Aufbau (Build-your-own tutor)**: the agent switches hats from
+  examiner → coach/mentor and walks you through how this skill was built and
+  how to fork it for your own use case (other exam format, other language,
+  research papers instead of PDFs, Anki export, …). Mode C reads this repo's
+  actual files rather than reciting from memory.
 
 Every question and every card is **anchored in retrieved passages**. If the
 corpus does not support a question, the agent says so instead of inventing one.
@@ -69,8 +74,9 @@ The skill then runs an **activation round**:
 1. Asks for the folder or PDF file(s) to load (recursive for folders).
 2. Verifies / creates the venv and installs requirements (first time only).
 3. Indexes every PDF found into the local Chroma store and reports counts.
-4. Asks **which mode** (A — Simulation, B — Karteikarten) plus mode-specific
-   setup (Kurzvortrag topic / number of cards + output format).
+4. Asks **which mode** (A — Simulation, B — Karteikarten, C — Aufbau) plus
+   mode-specific setup (Kurzvortrag topic / number of cards + output format /
+   target use case to adapt for).
 5. Begins the chosen mode.
 
 Continuation: re-activating with "weiter" / "continue" resumes without
