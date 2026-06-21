@@ -1,17 +1,20 @@
 # Kolloqium-Agent
 
-An opencode skill that turns a corpus of PDFs into a **conversational oral
-examiner** (German-style "Kolloquium" / "mündliche Prüfung").
+An opencode skill that turns a corpus of PDFs into an **NRW Kolloquium** coach.
+Built for the second-state exam (`Vorbereitungsdienst` / `Referendariat`).
 
-The agent asks one grounded question at a time, listens to your answer,
-acknowledges it, and follows up — like a qualified human examiner. Every
-question is anchored in a passage retrieved from your PDFs. If the corpus does
-not support a question, the agent says so instead of inventing one.
+The skill runs in two modes:
 
-## Why
+- **Mode A — Simulation**: a dynamic examiner conversation calibrated to the
+  real NRW format. You open with a self-chosen *Kurzvortrag*; the agent picks
+  up the "lose Enden" you leave and develops a flowing conversation across the
+  Handlungsfelder, weaving empirical grounding with practical experience.
+- **Mode B — Karteikarten**: produces study flashcards. Each card has a
+  fictional examiner question, 3–5 answer keywords, and the exact source
+  passage from your PDFs.
 
-Oral exams need pacing, follow-ups, and fair probing. Static flashcard apps
-don't do that. A grounded LLM agent does — as long as it cannot hallucinate.
+Every question and every card is **anchored in retrieved passages**. If the
+corpus does not support a question, the agent says so instead of inventing one.
 This skill enforces grounding by giving the agent access to **only** the
 passages a retrieval step returns.
 
@@ -66,8 +69,9 @@ The skill then runs an **activation round**:
 1. Asks for the folder or PDF file(s) to load (recursive for folders).
 2. Verifies / creates the venv and installs requirements (first time only).
 3. Indexes every PDF found into the local Chroma store and reports counts.
-4. Optionally asks 1–2 focus questions (topics, depth).
-5. Opens the exam with the first grounded question.
+4. Asks **which mode** (A — Simulation, B — Karteikarten) plus mode-specific
+   setup (Kurzvortrag topic / number of cards + output format).
+5. Begins the chosen mode.
 
 Continuation: re-activating with "weiter" / "continue" resumes without
 re-indexing.
